@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/stars_24dp_000000_fill0_wght400_grad0_opsz24"
+        android:drawableTint="?attr/colorOnPrimary"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pgbProgreso"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitulo" />
+
+    <TextView
+        android:id="@+id/txtFechaObjetivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="dd/mm/aaaa"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/pgbProgreso"
+        app:layout_constraintStart_toEndOf="@+id/pgbProgreso"
+        app:layout_constraintTop_toTopOf="@+id/pgbProgreso" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtQuedan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quedan"
+            android:textColor="?attr/colorOnPrimary" />
+
+        <TextView
+            android:id="@+id/txtDiasRestantes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="00"
+            android:textColor="?attr/colorOnPrimary" />
+
+        <TextView
+            android:id="@+id/txtDias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dias"
+            android:textColor="?attr/colorOnPrimary" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

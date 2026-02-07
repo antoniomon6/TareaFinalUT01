@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:context=".FirstFragment">
+
+    <EditText
+        android:id="@+id/etx_titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/titulo_tarea"
+        android:inputType="text"
+        android:textColor="?attr/colorOnTertiary"
+        android:textColorHint="?attr/colorOnTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/etx_fecha_creacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="@string/fecha_creacion"
+        android:inputType="none"
+        android:textColor="?attr/colorOnTertiary"
+        android:textColorHint="?attr/colorOnTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etx_titulo" />
+
+
+    <EditText
+        android:id="@+id/etx_fecha_limite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="@string/fecha_limite"
+        android:inputType="none"
+        android:textColor="?attr/colorOnTertiary"
+        android:textColorHint="?attr/colorOnTertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etx_fecha_creacion" />
+
+
+    <TextView
+        android:id="@+id/txt_progreso_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/progreso"
+        android:textColor="?attr/colorOnTertiary"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etx_fecha_limite" />
+
+
+    <Spinner
+        android:id="@+id/spn_progreso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/txt_progreso_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/txt_progreso_label"
+        app:layout_constraintTop_toTopOf="@id/txt_progreso_label"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <CheckBox
+        android:id="@+id/cmb_prioritaria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tarea_prioritaria"
+        android:textColor="?attr/colorOnTertiary"
+        app:buttonTint="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spn_progreso" />
+
+
+    <Button
+        android:id="@+id/btn_siguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="?attr/colorSecondary"
+        android:text="@string/siguiente"
+        android:textColor="?attr/colorOnSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cmb_prioritaria" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,34 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+    <string-array name="fuente_entries">
+        <item>Pequeña</item>
+        <item>Mediana</item>
+        <item>Grande</item>
+    </string-array>
+    <string-array name="fuente_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="criterio_entries">
+        <item>Alfabético</item>
+        <item>Fecha de creación</item>
+        <item>Días restantes</item>
+        <item>Prograso</item>
+    </string-array>
+    <string-array name="criterio_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+</resources>

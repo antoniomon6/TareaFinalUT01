@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/it_group_gestion_tarea">
+        <item
+
+            android:id="@+id/itmAnadirTarea"
+            android:icon="@drawable/add_task_30dp_000000_fill0_wght400_grad0_opsz24"
+            android:title="@string/anadir_tarea"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/itmHacerPrioritaria"
+            android:icon="@drawable/star_30dp_000000_fill0_wght400_grad0_opsz24"
+            android:title="@string/hacer_prioritaria"
+            app:showAsAction="ifRoom" />
+    </group>
+    <group
+        android:id="@+id/it_group_masOpciones">
+        <item android:title="@string/acerca_de"
+            android:id="@+id/itmAcercaDe"
+            />
+        <item
+            android:id="@+id/itmPreferencias"
+            android:title="Preferencias" />
+        <item android:title="@string/salir"
+            android:id="@+id/itmSalir"/>
+    </group>
+</menu>

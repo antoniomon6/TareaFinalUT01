@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">TrassTask</string>
+    <string name="app_Text_Inicio">Your tasks, your pace, your success</string>
+    <string name="empezar">START</string>
+    <string name="TituloTarea">Task Title</string>
+    <string name="quedan">Remaining:</string>
+    <string name="dias">days</string>
+    <string name="TItuloListado">Task List\n</string>
+    <string name="siguiente">Next</string>
+    <string name="tarea_prioritaria">Priority task</string>
+    <string name="progreso">Progress:</string>
+    <string name="fecha_limite">Deadline (YYYY-MM-DD)</string>
+    <string name="fecha_creacion">Creation date (YYYY-MM-DD)</string>
+    <string name="titulo_tarea">Task title</string>
+    <string-array name="opciones_progreso">
+        <item>Not started</item>
+        <item>Started</item>
+        <item>In progress</item>
+        <item>Almost finished</item>
+        <item>Completed</item>
+    </string-array>
+    <string name="acerca_de">About...</string>
+    <string name="salir">Exit</string>
+    <string name="hacer_prioritaria">Make Priority</string>
+    <string name="anadir_tarea">Add Task</string>
+    <string name="aceptar">Accept</string>
+    <string name="descripcion_tarea">Task description</string>
+    <string name="eliminar">Delete</string>
+    <string name="editar">Edit</string>
+    <string name="cancelar">Cancel</string>
+    <string name="desea_eliminar_este_elemento">Do you want to delete this item?</string>
+    <string name="borrar">Delete</string>
+    <string name="error_campo_vacio">This field cannot be empty</string>
+    <string name="titulo_editar_tarea">Edit Task</string>
+    <string name="titulo_crear_tarea">Create Task</string>
+    <string name="titulo_listado_tareas">Task List</string>
+    <string name="titulo_principal">TrassTask</string>
+</resources>

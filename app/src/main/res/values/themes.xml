@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TareaFinalUT01" parent="Theme.Material3.Light">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorSecondary">@color/light_secondary</item>
+        <item name="colorTertiary">@color/light_tertiary</item>
+        <item name="colorAccent">@color/light_accent</item>
+
+        <!-- Colors for text and icons -->
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnTertiary">@color/black</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Theme.TareaFinalUT01" parent="Base.Theme.TareaFinalUT01" />
+</resources>
