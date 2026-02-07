@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     Button btnEmpezar;
@@ -37,22 +37,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        actPreferences();
-    }
-
-    public void actPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean tema = sharedPreferences.getBoolean("switch_tema", true);
-
-        Integer fuente = Integer.parseInt(sharedPreferences.getString("list_fuente", "2"));
-
-        Integer criterio = Integer.parseInt(sharedPreferences.getString("list_criterio", "2"));
-
-        boolean orden = sharedPreferences.getBoolean("switch_orden", true);
-
-        boolean sd = sharedPreferences.getBoolean("checkbox_sd", false);
 
     }
+
+
     public void empezarApp(View view){
         Intent intent = new Intent(MainActivity.this, ListadoTareasActivity.class);
         startActivity(intent);

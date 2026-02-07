@@ -21,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class ListadoTareasActivity extends AppCompatActivity {
+public class ListadoTareasActivity extends BaseActivity {
 
     private RecyclerView rvTareas;
     private ArrayList<Tarea> misTareas = new ArrayList<>();
@@ -87,6 +89,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        actualiarLista();
     }
 
     @Override
@@ -136,6 +139,28 @@ public class ListadoTareasActivity extends AppCompatActivity {
     }
 
     private void actualiarLista() {
+        Comparator<Tarea> comparator;
+        switch (criterio) {
+            case "1": // Alfabético
+                comparator = Comparator.comparing(t -> t.getTitulo().toLowerCase());
+                break;
+            case "2": // Fecha de creación
+                comparator = Comparator.comparing(t -> t.getFechaCreacion());
+                break;
+            case "3": // Días restantes (Fecha límite)
+                comparator = Comparator.comparing(t -> t.getFechaLimite());
+                break;
+            case "4": // Progreso
+                comparator = Comparator.comparingInt(t -> t.getProgreso());
+                break;
+            default:
+                comparator = Comparator.comparing(t -> t.getFechaCreacion());
+                break;
+        }
+        if (!orden) {
+            comparator = comparator.reversed();
+        }
+        misTareas.sort(comparator);
         if (soloPrioritarias) {
             ArrayList<Tarea> tareasAUX = new ArrayList<>();
             misTareas.forEach(x -> {
@@ -197,12 +222,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Investigar CameraX y sus casos de uso.",
                 50,
                 LocalDate.now().minusDays(10),
+                LocalDate.now().plusDays(5),
                 true
         ));
         misTareas.add(new Tarea(
                 "Comprar billetes de tren",
                 "Billetes para el viaje de vacaciones de verano.",
                 0,
+                LocalDate.now().minusDays(2),
                 LocalDate.now().plusMonths(2),
                 false
         ));
@@ -211,12 +238,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Completar las lecciones sobre corrutinas.",
                 100,
                 LocalDate.now().minusDays(5),
+                LocalDate.now().plusDays(1),
                 false
         ));
         misTareas.add(new Tarea(
                 "Preparar presentación de proyecto",
                 "Crear diapositivas y guion para la demo final.",
                 75,
+                LocalDate.now().minusDays(3),
                 LocalDate.now().plusWeeks(1),
                 true
         ));
@@ -225,12 +254,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Clasificar documentos y eliminar duplicados.",
                 0,
                 LocalDate.now().minusMonths(1),
+                LocalDate.now().plusDays(10),
                 false
         ));
         misTareas.add(new Tarea(
                 "Entregar borrador del informe",
                 "Primer borrador del informe de análisis de datos.",
                 25,
+                LocalDate.now().minusDays(1),
                 LocalDate.now().plusDays(3),
                 true
         ));
@@ -239,12 +270,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "El botón de 'recordar contraseña' no funciona.",
                 100,
                 LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(2),
                 true
         ));
         misTareas.add(new Tarea(
                 "Leer 'Diseño de APIs REST'",
                 "Leer los primeros 3 capítulos.",
                 40,
+                LocalDate.now().minusDays(15),
                 LocalDate.now().plusWeeks(3),
                 false
         ));
@@ -252,6 +285,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Planificar la cena de aniversario",
                 "Reservar en un restaurante y comprar regalo.",
                 0,
+                LocalDate.now().minusDays(5),
                 LocalDate.now().plusDays(20),
                 false
         ));
@@ -260,12 +294,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Asegurarse de que la app es compatible con la última versión.",
                 90,
                 LocalDate.now().minusDays(2),
+                LocalDate.now().plusDays(4),
                 true
         ));
         misTareas.add(new Tarea(
                 "Hacer la colada",
                 "Separar ropa de color y blanca.",
                 20,
+                LocalDate.now().minusDays(1),
                 LocalDate.now().plusDays(1),
                 false
         ));
@@ -273,6 +309,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Pasear al perro",
                 "Ruta de 3km por el parque.",
                 100,
+                LocalDate.now().minusDays(1),
                 LocalDate.now(),
                 false
         ));
@@ -280,6 +317,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Llamar al dentista",
                 "Pedir cita para revisión anual.",
                 0,
+                LocalDate.now().minusDays(1),
                 LocalDate.now().plusDays(5),
                 true
         ));
@@ -288,12 +326,14 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 "Comprobar versiones y actualizar el build.gradle.",
                 60,
                 LocalDate.now().minusWeeks(2),
+                LocalDate.now().plusWeeks(2),
                 false
         ));
         misTareas.add(new Tarea(
                 "Terminar serie de TV",
                 "Ver los dos últimos episodios.",
                 80,
+                LocalDate.now().minusDays(1),
                 LocalDate.now().plusDays(2),
                 false
         ));

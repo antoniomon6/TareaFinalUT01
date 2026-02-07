@@ -2,15 +2,13 @@ package com.example.tareafinalut01;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +48,19 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
-            Toast.makeText(requireContext(), "Clave: "+key, Toast.LENGTH_SHORT).show();
-            if (key.equals("switch_tema")) {
+            if (key == null) return;
 
+            if (key.equals("switch_tema")) {
                 if (sharedPreferences.getBoolean("switch_tema", true)) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
             } else if (key.equals("list_fuente")) {
-
+                if (getActivity() != null) {
+                    getActivity().recreate();
+                }
             }
         }
     }
-
 }

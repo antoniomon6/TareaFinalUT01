@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
-public class CrearTareaActivity extends AppCompatActivity implements FirstFragment.ComuncacionFragmento1, SecondFragment.ComuncacionFragmento2 {
+public class CrearTareaActivity extends BaseActivity implements FirstFragment.ComuncacionFragmento1, SecondFragment.ComuncacionFragmento2 {
 
     FragmentManager manager;
     Tarea tarea;
