@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Adapatadores;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -7,16 +7,17 @@ import android.graphics.Typeface;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tareafinalut01.Entidades.Tarea;
+import com.example.tareafinalut01.R;
 
 import java.util.ArrayList;
 

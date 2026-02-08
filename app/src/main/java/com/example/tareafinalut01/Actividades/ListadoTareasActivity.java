@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Actividades;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tareafinalut01.R;
+import com.example.tareafinalut01.Entidades.Tarea;
+import com.example.tareafinalut01.Adapatadores.TareaAdapter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class ListadoTareasActivity extends BaseActivity {

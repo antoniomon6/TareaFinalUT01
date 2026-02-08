@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Actividades;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.example.tareafinalut01.R;
 
 public class SettingsActivity extends BaseActivity {
 

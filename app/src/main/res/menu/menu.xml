@@ -5,14 +5,15 @@
     <group
         android:id="@+id/it_group_gestion_tarea">
         <item
-
             android:id="@+id/itmAnadirTarea"
             android:icon="@drawable/add_task_30dp_000000_fill0_wght400_grad0_opsz24"
+            app:iconTint="?attr/colorMenuIcon"
             android:title="@string/anadir_tarea"
             app:showAsAction="ifRoom" />
         <item
             android:id="@+id/itmHacerPrioritaria"
             android:icon="@drawable/star_30dp_000000_fill0_wght400_grad0_opsz24"
+            app:iconTint="?attr/colorMenuIcon"
             android:title="@string/hacer_prioritaria"
             app:showAsAction="ifRoom" />
     </group>

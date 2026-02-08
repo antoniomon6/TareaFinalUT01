@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Actividades;
 
 import android.content.Intent;
 import android.os.Build;
@@ -6,11 +6,15 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
+
+import com.example.tareafinalut01.Fragmentos.FirstFragment;
+import com.example.tareafinalut01.R;
+import com.example.tareafinalut01.Fragmentos.SecondFragment;
+import com.example.tareafinalut01.Entidades.Tarea;
 
 public class CrearTareaActivity extends BaseActivity implements FirstFragment.ComuncacionFragmento1, SecondFragment.ComuncacionFragmento2 {
 

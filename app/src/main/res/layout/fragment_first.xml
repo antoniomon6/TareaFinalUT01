@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    tools:context=".FirstFragment">
+    tools:context=".Fragmentos.FirstFragment">
 
     <EditText
         android:id="@+id/etx_titulo"
@@ -88,6 +88,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spn_progreso" />
 
+    <Button
+        android:id="@+id/btn_cancelar"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Cancelar"
+        android:textColor="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cmb_prioritaria"
+        app:strokeColor="?attr/colorSecondary" />
 
     <Button
         android:id="@+id/btn_siguiente"
@@ -98,7 +109,6 @@
         android:text="@string/siguiente"
         android:textColor="?attr/colorOnSecondary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cmb_prioritaria" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

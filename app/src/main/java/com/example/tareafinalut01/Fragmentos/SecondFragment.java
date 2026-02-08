@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Fragmentos;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.tareafinalut01.R;
+import com.example.tareafinalut01.Entidades.Tarea;
 
 public class SecondFragment extends Fragment {
 

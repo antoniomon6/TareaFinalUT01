@@ -14,4 +14,5 @@
     <color name="dark_secondary">#0F828C</color>
     <color name="dark_tertiary">#065084</color>
     <color name="dark_accent">#320A6B</color>
+    <color name="grey">#CCCCCCCC</color>
 </resources>

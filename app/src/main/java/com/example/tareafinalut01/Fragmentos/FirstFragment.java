@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Fragmentos;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Button;
 
+import com.example.tareafinalut01.R;
+import com.example.tareafinalut01.Entidades.Tarea;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -31,6 +34,7 @@ public class FirstFragment extends Fragment {
     private Spinner spnProgreso;
     private CheckBox cbPrioritaria;
     private Button btnSiguiente;
+    private Button btnCancelar;
     private Tarea tarea;
 
     private int progreso;
@@ -82,6 +86,7 @@ public class FirstFragment extends Fragment {
         spnProgreso = fragmento1.findViewById(R.id.spn_progreso);
         cbPrioritaria = fragmento1.findViewById(R.id.cmb_prioritaria);
         btnSiguiente = fragmento1.findViewById(R.id.btn_siguiente);
+        btnCancelar = fragmento1.findViewById(R.id.btn_cancelar);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -118,6 +123,10 @@ public class FirstFragment extends Fragment {
                 }
                 comunicador1.guardarTareaSinDescripcion(tarea);
             }
+        });
+
+        btnCancelar.setOnClickListener(v -> {
+            this.getActivity().finish();
         });
 
         return fragmento1;

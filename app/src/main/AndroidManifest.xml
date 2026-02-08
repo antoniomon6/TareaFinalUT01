@@ -12,17 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TareaFinalUT01">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Actividades.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".CrearTareaActivity"
+            android:name=".Actividades.CrearTareaActivity"
             android:exported="false" />
         <activity
-            android:name=".ListadoTareasActivity"
+            android:name=".Actividades.ListadoTareasActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Actividades.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

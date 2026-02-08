@@ -1,4 +1,4 @@
-package com.example.tareafinalut01;
+package com.example.tareafinalut01.Actividades;
 
 import android.content.Context;
 import android.content.SharedPreferences;

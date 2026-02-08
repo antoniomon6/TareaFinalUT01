@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".SecondFragment">
+    tools:context=".Fragmentos.SecondFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,7 +25,70 @@
             android:textColorHint="?attr/colorOnTertiary" />
     </ScrollView>
 
-    <!-- Contenedor para los botones con ConstraintLayout -->
+    <!-- Contenedor para los botones con TableLayout centrado -->
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_documento"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Adjuntar Documento"
+                android:scaleType="fitCenter"
+                android:src="@drawable/documento"
+                app:tint="?attr/colorMultimediaIcon" />
+
+            <ImageButton
+                android:id="@+id/btn_imagen"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Adjuntar Imagen"
+                android:scaleType="fitCenter"
+                android:src="@drawable/imagen"
+                app:tint="?attr/colorMultimediaIcon" />
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/btn_audio"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Adjuntar Audio"
+                android:scaleType="fitCenter"
+                android:src="@drawable/audio"
+                app:tint="?attr/colorMultimediaIcon" />
+
+            <ImageButton
+                android:id="@+id/btn_video"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Adjuntar Video"
+                android:scaleType="fitCenter"
+                android:src="@drawable/video"
+                app:tint="?attr/colorMultimediaIcon" />
+        </TableRow>
+
+    </TableLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
