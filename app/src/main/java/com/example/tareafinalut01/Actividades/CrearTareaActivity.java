@@ -3,6 +3,7 @@ package com.example.tareafinalut01.Actividades;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -35,11 +36,13 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
 
         manager = getSupportFragmentManager();
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         if (savedInstanceState == null) {
-            // La actividad se crea por primera vez
             Intent intent = getIntent();
             if (intent != null && intent.hasExtra("tarea")) {
-                // MODO EDICIÓN
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     tarea = intent.getParcelableExtra("tarea", Tarea.class);
                 } else {
@@ -47,14 +50,11 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
                 }
                 posTarea = intent.getIntExtra("pos", -1);
             } else {
-                // MODO CREACIÓN
                 tarea = new Tarea();
             }
-            // Mostramos el primer fragmento
             FirstFragment primero = FirstFragment.newInstance(tarea);
             manager.beginTransaction().add(R.id.lineal_frag, primero).commit();
         } else {
-            // La actividad se está recreando, restauramos el estado
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 tarea = savedInstanceState.getParcelable("tarea", Tarea.class);
             } else {
@@ -63,7 +63,6 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
             posTarea = savedInstanceState.getInt("posTarea", -1);
         }
 
-        // Ponemos el título después de saber si creamos o editamos
         if (posTarea != -1) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(R.string.titulo_editar_tarea);
@@ -76,9 +75,17 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Guardamos el estado actual antes de que la actividad se destruya
         outState.putParcelable("tarea", tarea);
         outState.putInt("posTarea", posTarea);
     }

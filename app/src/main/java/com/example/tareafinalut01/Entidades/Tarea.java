@@ -165,13 +165,4 @@ public class Tarea implements Parcelable {
         dest.writeString(uriAudio);
         dest.writeString(uriVideo);
     }
-    @TypeConverter
-    public static LocalDate fromString(String value) {
-        return value == null ? null : LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
-    }
-
-    @TypeConverter
-    public static String dateToString(LocalDate date) {
-        return date == null ? null : date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-    }
 }

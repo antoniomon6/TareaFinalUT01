@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorTertiary"
+    android:padding="16dp"
+    tools:context=".Actividades.DescripcionActivity">
+
+    <TextView
+        android:id="@+id/tv_titulo_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título de la Tarea"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnTertiary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/sv_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_titulo_detalle"
+        app:layout_constraintBottom_toTopOf="@id/tl_adjuntos"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_descripcion_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción larga de la tarea..."
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnTertiary" />
+    </ScrollView>
+
+    <TableLayout
+        android:id="@+id/tl_adjuntos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:stretchColumns="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TableRow android:padding="4dp" android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_icon_doc"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/documento"
+                app:tint="?attr/colorMultimediaIcon" />
+            <TextView
+                android:id="@+id/tv_name_doc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Ningún documento"
+                android:textColor="?attr/colorOnTertiary" />
+        </TableRow>
+
+        <TableRow android:padding="4dp" android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_icon_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/imagen"
+                app:tint="?attr/colorMultimediaIcon" />
+            <TextView
+                android:id="@+id/tv_name_img"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Ninguna imagen"
+                android:textColor="?attr/colorOnTertiary" />
+        </TableRow>
+
+        <TableRow android:padding="4dp" android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_icon_aud"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/audio"
+                app:tint="?attr/colorMultimediaIcon" />
+            <TextView
+                android:id="@+id/tv_name_aud"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Ningún audio"
+                android:textColor="?attr/colorOnTertiary" />
+        </TableRow>
+
+        <TableRow android:padding="4dp" android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_icon_vid"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/video"
+                app:tint="?attr/colorMultimediaIcon" />
+            <TextView
+                android:id="@+id/tv_name_vid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Ningún vídeo"
+                android:textColor="?attr/colorOnTertiary" />
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

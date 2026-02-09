@@ -22,6 +22,9 @@
             android:name=".Actividades.ListadoTareasActivity"
             android:exported="false" />
         <activity
+            android:name=".Actividades.DescripcionActivity"
+            android:exported="false" />
+        <activity
             android:name=".Actividades.MainActivity"
             android:exported="true">
             <intent-filter>

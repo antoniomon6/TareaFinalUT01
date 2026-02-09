@@ -1,5 +1,6 @@
 package com.example.tareafinalut01.Adapatadores;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,9 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tareafinalut01.Actividades.DescripcionActivity;
 import com.example.tareafinalut01.Entidades.Tarea;
 import com.example.tareafinalut01.R;
 
@@ -92,12 +93,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolderTa
                 titulo.setTypeface(null, Typeface.NORMAL);
             }
             itemView.setOnClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-                builder.setTitle(R.string.descripcion_tarea);
-                builder.setMessage(tarea.getDescripcion());
-                builder.setPositiveButton(R.string.aceptar, null);
-                AlertDialog alert = builder.create();
-                alert.show();
+                Intent intent = new Intent(v.getContext(), DescripcionActivity.class);
+                intent.putExtra("tarea", tarea);
+                v.getContext().startActivity(intent);
             });
 
 
