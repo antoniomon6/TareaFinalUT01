@@ -16,12 +16,14 @@ import com.example.tareafinalut01.Fragmentos.FirstFragment;
 import com.example.tareafinalut01.R;
 import com.example.tareafinalut01.Fragmentos.SecondFragment;
 import com.example.tareafinalut01.Entidades.Tarea;
+import com.example.tareafinalut01.Repositorio.TareaRepository;
 
 public class CrearTareaActivity extends BaseActivity implements FirstFragment.ComuncacionFragmento1, SecondFragment.ComuncacionFragmento2 {
 
     FragmentManager manager;
     Tarea tarea;
     int posTarea = -1;
+    private TareaRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
             return insets;
         });
 
+        repository = new TareaRepository(getApplication());
         manager = getSupportFragmentManager();
 
         if (getSupportActionBar() != null) {
@@ -91,35 +94,34 @@ public class CrearTareaActivity extends BaseActivity implements FirstFragment.Co
     }
 
     @Override
-    public void ir1() {
-        FirstFragment primero = FirstFragment.newInstance(tarea);
+    public void ir1(Tarea tareaActualizada) {
+        this.tarea = tareaActualizada;
+        FirstFragment primero = FirstFragment.newInstance(this.tarea);
         manager.beginTransaction().replace(R.id.lineal_frag, primero).commit();
     }
 
     @Override
-    public void guardarDescripcion(String descripcion) {
-        if (tarea != null) {
-            tarea.setDescripcion(descripcion);
+    public void guardarTareaCompleta(Tarea tareaCompleta) {
+        this.tarea = tareaCompleta;
+        if (this.tarea != null) {
+            if (posTarea != -1) {
+                repository.update(this.tarea);
+            } else {
+                repository.insert(this.tarea);
+            }
         }
-        Intent resultIntent = new Intent();
-        if (posTarea != -1) {
-            resultIntent.putExtra("EDITAR_TAREA", tarea);
-            resultIntent.putExtra("pos", posTarea);
-        } else {
-            resultIntent.putExtra("NUEVA_TAREA", tarea);
-        }
-        setResult(RESULT_OK, resultIntent);
+        setResult(RESULT_OK);
         finish();
     }
 
     @Override
     public void guardarTareaSinDescripcion(Tarea tareaSinDescripcion) {
-        if (tarea != null) {
-            tarea.setTitulo(tareaSinDescripcion.getTitulo());
-            tarea.setProgreso(tareaSinDescripcion.getProgreso());
-            tarea.setFechaCreacion(tareaSinDescripcion.getFechaCreacion());
-            tarea.setFechaLimite(tareaSinDescripcion.getFechaLimite());
-            tarea.setPrioritaria(tareaSinDescripcion.isPrioritaria());
+        if (this.tarea != null) {
+            this.tarea.setTitulo(tareaSinDescripcion.getTitulo());
+            this.tarea.setProgreso(tareaSinDescripcion.getProgreso());
+            this.tarea.setFechaCreacion(tareaSinDescripcion.getFechaCreacion());
+            this.tarea.setFechaLimite(tareaSinDescripcion.getFechaLimite());
+            this.tarea.setPrioritaria(tareaSinDescripcion.isPrioritaria());
         } else {
             this.tarea = tareaSinDescripcion;
         }

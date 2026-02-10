@@ -16,28 +16,34 @@ public class TareaRepository {
 
     private TareaDAO tareaDAO;
     private LiveData<List<Tarea>> listaTareas;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public TareaRepository(Application application) {
-        // Obtenemos la instancia de la base de datos y del DAO.
         BaseDatosApp db = BaseDatosApp.getInstance(application);
         tareaDAO = db.tareaDAO();
-        // Inicializamos la lista de tareas. Room la mantendrá actualizada.
         listaTareas = tareaDAO.getAll();
+    }
+
+    public void insert(Tarea tarea) {
+        executorService.execute(() -> tareaDAO.insertAll(tarea));
+    }
+
+    public void update(Tarea tarea) {
+        executorService.execute(() -> tareaDAO.update(tarea));
+    }
+
+    public void delete(Tarea tarea) {
+        executorService.execute(() -> tareaDAO.delete(tarea));
     }
 
     public LiveData<List<Tarea>> getAllTareas() {
         return listaTareas;
     }
+    public LiveData<Double> getAverageProgress() { return tareaDAO.getAverageProgress(); }
+    public LiveData<Integer> getCompletedCount() { return tareaDAO.getCompletedCount(); }
+    public LiveData<Integer> getPriorityCount() { return tareaDAO.getPriorityCount(); }
+    public LiveData<Integer> getTotalCount() { return tareaDAO.getTotalCount(); }
 
-    public void insert(Tarea tarea) {
-        tareaDAO.insertAll(tarea);
-    }
 
-    public void delete(Tarea tarea) {
-        tareaDAO.delete(tarea);
-    }
 
-    public void update(Tarea tarea) {
-        tareaDAO.update(tarea);
-    }
 }

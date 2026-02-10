@@ -46,8 +46,8 @@ public class SecondFragment extends Fragment {
     private String tipoFicheroSolicitado;
 
     public interface ComuncacionFragmento2 {
-        void ir1();
-        void guardarDescripcion(String descripcion);
+        void ir1(Tarea tareaActualizada);
+        void guardarTareaCompleta(Tarea tareaCompleta);
     }
 
     private ComuncacionFragmento2 comunicador2;
@@ -123,20 +123,21 @@ public class SecondFragment extends Fragment {
         btnGuardar.setOnClickListener(v -> {
             if (tarea != null) {
                 tarea.setDescripcion(etDescripcion.getText().toString());
+                comunicador2.guardarTareaCompleta(tarea);
             }
-            comunicador2.guardarDescripcion(etDescripcion.getText().toString());
         });
         btnVolver.setOnClickListener(v -> {
-            comunicador2.ir1();
+            if (tarea != null) {
+                tarea.setDescripcion(etDescripcion.getText().toString());
+                comunicador2.ir1(tarea);
+            }
         });
 
-        // Selección de ficheros
         btnDocumento.setOnClickListener(v -> elegirFichero("*/*"));
         btnImagen.setOnClickListener(v -> elegirFichero("image/*"));
         btnAudio.setOnClickListener(v -> elegirFichero("audio/*"));
         btnVideo.setOnClickListener(v -> elegirFichero("video/*"));
 
-        // Eliminación de ficheros (Pulsación larga)
         btnDocumento.setOnLongClickListener(v -> confirmarBorrado("documento"));
         btnImagen.setOnLongClickListener(v -> confirmarBorrado("imagen"));
         btnAudio.setOnLongClickListener(v -> confirmarBorrado("audio"));
@@ -166,18 +167,16 @@ public class SecondFragment extends Fragment {
 
     private void actualizarEstadoBotones() {
         if (tarea == null) return;
-
         actualizarFondoBoton(btnDocumento, tarea.getUriDocumento() != null);
         actualizarFondoBoton(btnImagen, tarea.getUriImagen() != null);
         actualizarFondoBoton(btnAudio, tarea.getUriAudio() != null);
         actualizarFondoBoton(btnVideo, tarea.getUriVideo() != null);
     }
+
     private void actualizarFondoBoton(ImageButton btn, boolean tieneArchivo) {
         if (tieneArchivo) {
-            // fondo leve para saber que se ha añadido un archivo
             btn.setBackgroundColor(Color.parseColor("#4481C784")); 
         } else {
-            // Fondo transparente (por defecto)
             btn.setBackgroundColor(Color.TRANSPARENT);
         }
     }

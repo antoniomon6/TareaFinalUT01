@@ -21,7 +21,17 @@ public interface TareaDAO {
 
     @Query("SELECT * FROM tareas WHERE titulo LIKE :titulo LIMIT 1")
     Tarea findByTitulo(String titulo);
+    @Query("SELECT AVG(progreso) FROM tareas")
+    LiveData<Double> getAverageProgress();
 
+    @Query("SELECT COUNT(*) FROM tareas WHERE progreso = 100")
+    LiveData<Integer> getCompletedCount();
+
+    @Query("SELECT COUNT(*) FROM tareas WHERE prioritaria = 1")
+    LiveData<Integer> getPriorityCount();
+
+    @Query("SELECT COUNT(*) FROM tareas")
+    LiveData<Integer> getTotalCount();
     @Insert
     void insertAll(Tarea... tareas);
 
