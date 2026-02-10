@@ -23,6 +23,9 @@
             android:id="@+id/itmAcercaDe"
             />
         <item
+            android:id="@+id/itmEstadisticas"
+            android:title="Estadísticas" />
+        <item
             android:id="@+id/itmPreferencias"
             android:title="Preferencias" />
         <item android:title="@string/salir"

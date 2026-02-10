@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="24dp"
+    android:background="?attr/colorTertiary"
+    tools:context=".Actividades.EstadisticasActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_titulo_estadisticas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas Generales"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnTertiary"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_progreso_medio_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Progreso Medio"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnTertiary"/>
+
+        <TextView
+            android:id="@+id/tv_progreso_medio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnTertiary"/>
+
+        <ProgressBar
+            android:id="@+id/pb_progreso_medio"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:progress="0"
+            android:max="100"/>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginStart="24dp"
+        android:gravity="center_vertical">
+
+        <TableRow android:paddingBottom="8dp">
+            <TextView
+                android:text="Total de Tareas:"
+                android:textSize="18sp"
+                android:textColor="?attr/colorOnTertiary"/>
+            <TextView
+                android:id="@+id/tv_total_tareas"
+                android:text="0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnTertiary"
+                android:paddingStart="16dp"/>
+        </TableRow>
+
+        <TableRow android:paddingBottom="8dp">
+            <TextView
+                android:text="Prioritarias:"
+                android:textSize="18sp"
+                android:textColor="?attr/colorOnTertiary"/>
+            <TextView
+                android:id="@+id/tv_tareas_prioritarias"
+                android:text="0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnTertiary"
+                android:paddingStart="16dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Completadas:"
+                android:textSize="18sp"
+                android:textColor="?attr/colorOnTertiary"/>
+            <TextView
+                android:id="@+id/tv_tareas_completadas"
+                android:text="0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnTertiary"
+                android:paddingStart="16dp"/>
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

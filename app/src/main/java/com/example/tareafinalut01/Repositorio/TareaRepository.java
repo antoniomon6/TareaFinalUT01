@@ -16,7 +16,8 @@ public class TareaRepository {
 
     private TareaDAO tareaDAO;
     private LiveData<List<Tarea>> listaTareas;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
 
     public TareaRepository(Application application) {
         BaseDatosApp db = BaseDatosApp.getInstance(application);
@@ -24,26 +25,36 @@ public class TareaRepository {
         listaTareas = tareaDAO.getAll();
     }
 
-    public void insert(Tarea tarea) {
-        executorService.execute(() -> tareaDAO.insertAll(tarea));
+    public LiveData<List<Tarea>> getAllTareas() {
+        return listaTareas;
     }
 
-    public void update(Tarea tarea) {
-        executorService.execute(() -> tareaDAO.update(tarea));
+    public void insert(Tarea tarea) {
+        executorService.execute(() -> tareaDAO.insertAll(tarea));
     }
 
     public void delete(Tarea tarea) {
         executorService.execute(() -> tareaDAO.delete(tarea));
     }
 
-    public LiveData<List<Tarea>> getAllTareas() {
-        return listaTareas;
+    public void update(Tarea tarea) {
+        executorService.execute(() -> tareaDAO.update(tarea));
     }
-    public LiveData<Double> getAverageProgress() { return tareaDAO.getAverageProgress(); }
-    public LiveData<Integer> getCompletedCount() { return tareaDAO.getCompletedCount(); }
-    public LiveData<Integer> getPriorityCount() { return tareaDAO.getPriorityCount(); }
-    public LiveData<Integer> getTotalCount() { return tareaDAO.getTotalCount(); }
 
+    // --- Métodos para Estadísticas ---
+    public LiveData<Integer> getTotalTaskCount() {
+        return tareaDAO.getTotalTaskCount();
+    }
 
+    public LiveData<Integer> getPriorityTaskCount() {
+        return tareaDAO.getPriorityTaskCount();
+    }
 
+    public LiveData<Integer> getCompletedTaskCount() {
+        return tareaDAO.getCompletedTaskCount();
+    }
+
+    public LiveData<Double> getAverageProgress() {
+        return tareaDAO.getAverageProgress();
+    }
 }

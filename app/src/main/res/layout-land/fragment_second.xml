@@ -8,86 +8,29 @@
     android:padding="16dp"
     tools:context=".Fragmentos.SecondFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <EditText
+            android:id="@+id/etm_Descricion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/descripcion_tarea"
+            android:inputType="textMultiLine"
+            android:textColor="?attr/colorOnTertiary"
+            android:textColorHint="?attr/colorOnTertiary" />
+    </ScrollView>
 
-            <EditText
-                android:id="@+id/etm_Descricion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="@string/descripcion_tarea"
-                android:inputType="textMultiLine"
-                android:textColor="?attr/colorOnTertiary"
-                android:textColorHint="?attr/colorOnTertiary" />
-        </ScrollView>
-
-        <!-- Botones en LinearLayout horizontal para modo Land -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingStart="16dp">
-
-            <ImageButton
-                android:id="@+id/btn_documento"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Adjuntar Documento"
-                android:scaleType="fitCenter"
-                android:src="@drawable/documento" />
-
-            <ImageButton
-                android:id="@+id/btn_imagen"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Adjuntar Imagen"
-                android:scaleType="fitCenter"
-                android:src="@drawable/imagen" />
-
-            <ImageButton
-                android:id="@+id/btn_audio"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Adjuntar Audio"
-                android:scaleType="fitCenter"
-                android:src="@drawable/audio" />
-
-            <ImageButton
-                android:id="@+id/btn_video"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Adjuntar Video"
-                android:scaleType="fitCenter"
-                android:src="@drawable/video" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Contenedor inferior: Botones multimedia entre Volver y Guardar -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingTop="8dp">
 
         <Button
@@ -97,9 +40,60 @@
             android:layout_height="wrap_content"
             android:text="Volver"
             android:textColor="?attr/colorSecondary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="?attr/colorSecondary" />
+
+        <!-- Espacio flexible -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Botones multimedia coloreados -->
+        <ImageButton
+            android:id="@+id/btn_documento"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/documento"
+            app:tint="?attr/colorMultimediaIcon" />
+
+        <ImageButton
+            android:id="@+id/btn_imagen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/imagen"
+            app:tint="?attr/colorMultimediaIcon" />
+
+        <ImageButton
+            android:id="@+id/btn_audio"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/audio"
+            app:tint="?attr/colorMultimediaIcon" />
+
+        <ImageButton
+            android:id="@+id/btn_video"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/video"
+            app:tint="?attr/colorMultimediaIcon" />
+
+        <!-- Espacio flexible -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_Guardar"
@@ -107,10 +101,8 @@
             android:layout_height="wrap_content"
             android:backgroundTint="?attr/colorSecondary"
             android:text="Guardar"
-            android:textColor="?attr/colorOnSecondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="?attr/colorOnSecondary" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -2,15 +2,13 @@
     <string name="app_name">TrassTask</string>
     <string name="app_Text_Inicio">Your tasks, your pace, your success</string>
     <string name="empezar">START</string>
-    <string name="TituloTarea">Task Title</string>
     <string name="quedan">Remaining:</string>
     <string name="dias">days</string>
-    <string name="TItuloListado">Task List\n</string>
     <string name="siguiente">Next</string>
     <string name="tarea_prioritaria">Priority task</string>
     <string name="progreso">Progress:</string>
-    <string name="fecha_limite">Deadline (YYYY-MM-DD)</string>
-    <string name="fecha_creacion">Creation date (YYYY-MM-DD)</string>
+    <string name="fecha_limite">Deadline (DD/MM/YYYY)</string>
+    <string name="fecha_creacion">Creation date (DD/MM/YYYY)</string>
     <string name="titulo_tarea">Task title</string>
     <string-array name="opciones_progreso">
         <item>Not started</item>
@@ -35,4 +33,11 @@
     <string name="titulo_crear_tarea">Create Task</string>
     <string name="titulo_listado_tareas">Task List</string>
     <string name="titulo_principal">TrassTask</string>
+    <string name="titulo_activity_settings">Settings</string>
+    <string name="detalle_tarea">Task Details</string>
+    <string name="estadisticas">Statistics</string>
+    <string name="archivo_vinculado">File linked</string>
+    <string name="archivo_eliminado">File deleted</string>
+    <string name="archivo_guardado">File saved locally</string>
+    <string name="error_guardar_archivo">Error saving file</string>
 </resources>

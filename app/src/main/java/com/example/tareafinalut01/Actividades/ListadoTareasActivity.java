@@ -155,6 +155,9 @@ public class ListadoTareasActivity extends BaseActivity {
                     "TrassTarea \n IES Trassierra \n Antonio Malagon Garcia \n 2025",
                     getString(R.string.aceptar));
 
+        }else if (id == R.id.itmEstadisticas) {
+            Intent intent = new Intent(ListadoTareasActivity.this, EstadisticasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.itmSalir) {
             finishAffinity();
         } else if (id == R.id.itmPreferencias) {

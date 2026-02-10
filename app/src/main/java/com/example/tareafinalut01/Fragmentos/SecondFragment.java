@@ -8,15 +8,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
-
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +17,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.tareafinalut01.R;
 import com.example.tareafinalut01.Entidades.Tarea;
@@ -100,6 +100,8 @@ public class SecondFragment extends Fragment {
                                 }
                                 Toast.makeText(getContext(), "Archivo vinculado", Toast.LENGTH_SHORT).show();
                                 actualizarEstadoBotones();
+                            } else {
+                                Toast.makeText(getContext(), "Error al guardar el archivo", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -192,15 +194,37 @@ public class SecondFragment extends Fragment {
     private String guardarArchivoEnLocal(Uri uri) {
         try {
             String nombreArchivo = getFileName(uri);
-            File carpetaDestino;
+            if (nombreArchivo == null) nombreArchivo = "archivo_adjunto";
+            File carpetaDestino = null;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-            if (prefs.getBoolean("checkbox_sd", false)) {
+            boolean deseaSD = prefs.getBoolean("checkbox_sd", false);
+
+            // Si desea SD, buscamos EXCLUSIVAMENTE una tarjeta SD física real (índice 1)
+            if (deseaSD) {
                 File[] externalDirs = requireContext().getExternalFilesDirs(null);
-                carpetaDestino = new File((externalDirs.length > 1 && externalDirs[1] != null) ? externalDirs[1] : externalDirs[0], "adjuntos");
-            } else {
+                if (externalDirs != null && externalDirs.length > 1 && externalDirs[1] != null) {
+                    // Verificamos que la SD física esté montada y lista para escribir
+                    if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(externalDirs[1]))) {
+                        carpetaDestino = new File(externalDirs[1], "adjuntos");
+                    }
+                }
+            }
+
+            // Si no se encontró SD física, usamos el almacenamiento interno privado
+            if (carpetaDestino == null) {
                 carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
             }
-            if (!carpetaDestino.exists()) carpetaDestino.mkdirs();
+
+
+            if (!carpetaDestino.exists()) {
+                if (!carpetaDestino.mkdirs()) {
+                    // Fallback de emergencia al almacenamiento interno privado
+                    carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
+                    if (!carpetaDestino.exists()) carpetaDestino.mkdirs();
+                }
+            }
+
+
             File archivoDestino = new File(carpetaDestino, System.currentTimeMillis() + "_" + nombreArchivo);
             try (InputStream in = requireContext().getContentResolver().openInputStream(uri);
                  OutputStream out = new FileOutputStream(archivoDestino)) {
@@ -208,8 +232,10 @@ public class SecondFragment extends Fragment {
                 int len;
                 while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
             }
+
             return Uri.fromFile(archivoDestino).toString();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

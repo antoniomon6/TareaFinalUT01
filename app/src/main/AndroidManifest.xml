@@ -14,7 +14,7 @@
         <activity
             android:name=".Actividades.SettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/titulo_activity_settings" />
         <activity
             android:name=".Actividades.CrearTareaActivity"
             android:exported="false" />
@@ -23,6 +23,9 @@
             android:exported="false" />
         <activity
             android:name=".Actividades.DescripcionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Actividades.EstadisticasActivity"
             android:exported="false" />
         <activity
             android:name=".Actividades.MainActivity"

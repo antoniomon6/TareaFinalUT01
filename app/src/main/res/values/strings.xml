@@ -2,15 +2,13 @@
     <string name="app_name">TrassTarea</string>
     <string name="app_Text_Inicio">Tus tareas, tu ritmo, tu éxito</string>
     <string name="empezar">EMPEZAR</string>
-    <string name="TituloTarea">Titulo de la Tarea</string>
     <string name="quedan">Quedan:</string>
     <string name="dias">días</string>
-    <string name="TItuloListado">Listado de Tareas\n</string>
     <string name="siguiente">Siguiente</string>
     <string name="tarea_prioritaria">Tarea prioritaria</string>
     <string name="progreso">Progreso:</string>
-    <string name="fecha_limite">Fecha límite (YYYY-MM-DD)</string>
-    <string name="fecha_creacion">Fecha de creación (YYYY-MM-DD)</string>
+    <string name="fecha_limite">Fecha límite (DD/MM/YYYY)</string>
+    <string name="fecha_creacion">Fecha de creación (DD/MM/YYYY)</string>
     <string name="titulo_tarea">Título de la tarea</string>
     <string-array name="opciones_progreso">
         <item>No iniciada</item>
@@ -27,29 +25,19 @@
     <string name="descripcion_tarea">Descripción de la tarea</string>
     <string name="eliminar">Eliminar</string>
     <string name="editar">Editar</string>
-    <string name="cancelar">cancelar</string>
+    <string name="cancelar">Cancelar</string>
     <string name="desea_eliminar_este_elemento">¿Desea eliminar este elemento?</string>
     <string name="borrar">Borrar</string>
-    <string name="error_campo_vacio">Este campo no debe estar vacio</string>
+    <string name="error_campo_vacio">Este campo no debe estar vacío</string>
     <string name="titulo_editar_tarea">Editar Tarea</string>
     <string name="titulo_crear_tarea">Crear Tarea</string>
     <string name="titulo_listado_tareas">Listado de Tareas</string>
     <string name="titulo_principal">TrassTarea</string>
-    <string name="title_activity_settings">SettingsActivity</string>
-
-
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="titulo_activity_settings">Preferencias</string>
     <string name="detalle_tarea">Detalles de la Tarea</string>
+    <string name="estadisticas">Estadísticas</string>
+    <string name="archivo_vinculado">Archivo vinculado</string>
+    <string name="archivo_eliminado">Archivo eliminado</string>
+    <string name="archivo_guardado">Archivo guardado localmente</string>
+    <string name="error_guardar_archivo">Error al guardar el archivo</string>
 </resources>
