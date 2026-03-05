@@ -15,19 +15,14 @@ import java.util.List;
 public interface TareaDAO {
     @Query("SELECT * FROM tareas")
     LiveData<List<Tarea>> getAll();
-
     @Query("SELECT * FROM tareas WHERE _id IN (:tarIds)")
     List<Tarea> loadAllByIds(int[] tarIds);
-
     @Query("SELECT * FROM tareas WHERE titulo LIKE :titulo LIMIT 1")
     Tarea findByTitulo(String titulo);
-
     @Insert
     void insertAll(Tarea... tareas);
-
     @Delete
     void delete(Tarea tarea);
-
     @Update
     void update(Tarea tarea);
 

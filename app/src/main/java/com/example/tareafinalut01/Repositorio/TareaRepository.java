@@ -13,30 +13,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TareaRepository {
-
     private TareaDAO tareaDAO;
     private LiveData<List<Tarea>> listaTareas;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-
     public TareaRepository(Application application) {
         BaseDatosApp db = BaseDatosApp.getInstance(application);
         tareaDAO = db.tareaDAO();
         listaTareas = tareaDAO.getAll();
     }
-
     public LiveData<List<Tarea>> getAllTareas() {
         return listaTareas;
     }
-
     public void insert(Tarea tarea) {
         executorService.execute(() -> tareaDAO.insertAll(tarea));
     }
-
     public void delete(Tarea tarea) {
         executorService.execute(() -> tareaDAO.delete(tarea));
     }
-
     public void update(Tarea tarea) {
         executorService.execute(() -> tareaDAO.update(tarea));
     }

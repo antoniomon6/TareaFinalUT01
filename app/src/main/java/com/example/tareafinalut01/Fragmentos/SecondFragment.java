@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -41,9 +43,10 @@ public class SecondFragment extends Fragment {
     private Button btnGuardar;
     private ImageButton btnDocumento, btnImagen, btnAudio, btnVideo;
 
-    private ActivityResultLauncher<Intent> filePickerLauncher;
+    private ActivityResultLauncher<Intent> multimediaLauncher;
     private Tarea tarea;
     private String tipoFicheroSolicitado;
+    private Uri uriCamaraTemporal;
 
     public interface ComuncacionFragmento2 {
         void ir1(Tarea tareaActualizada);
@@ -76,37 +79,43 @@ public class SecondFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filePickerLauncher = registerForActivityResult(
+        multimediaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        if (uri != null && tarea != null) {
-                            String localUri = guardarArchivoEnLocal(uri);
-                            if (localUri != null) {
-                                switch (tipoFicheroSolicitado) {
-                                    case "image/*":
-                                        tarea.setUriImagen(localUri);
-                                        break;
-                                    case "video/*":
-                                        tarea.setUriVideo(localUri);
-                                        break;
-                                    case "audio/*":
-                                        tarea.setUriAudio(localUri);
-                                        break;
-                                    case "*/*":
-                                        tarea.setUriDocumento(localUri);
-                                        break;
-                                }
-                                Toast.makeText(getContext(), "Archivo vinculado", Toast.LENGTH_SHORT).show();
-                                actualizarEstadoBotones();
-                            } else {
-                                Toast.makeText(getContext(), "Error al guardar el archivo", Toast.LENGTH_SHORT).show();
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        String finalUri = null;
+
+                        if (uriCamaraTemporal != null) {
+                            // Viene de captura directa (Cámara/Audio)
+                            finalUri = uriCamaraTemporal.toString();
+                            uriCamaraTemporal = null;
+                        } else if (result.getData() != null) {
+                            // Viene de selección de archivo
+                            Uri selectedUri = result.getData().getData();
+                            if (selectedUri != null) {
+                                finalUri = guardarArchivoEnLocal(selectedUri);
                             }
                         }
+
+                        if (finalUri != null && tarea != null) {
+                            vincularUriATarea(finalUri);
+                            actualizarEstadoBotones();
+                            Toast.makeText(getContext(), R.string.archivo_vinculado, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        uriCamaraTemporal = null;
                     }
                 }
         );
+    }
+
+    private void vincularUriATarea(String uri) {
+        switch (tipoFicheroSolicitado) {
+            case "image/*": tarea.setUriImagen(uri); break;
+            case "video/*": tarea.setUriVideo(uri); break;
+            case "audio/*": tarea.setUriAudio(uri); break;
+            case "*/*": tarea.setUriDocumento(uri); break;
+        }
     }
 
     @Override
@@ -135,10 +144,13 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        btnDocumento.setOnClickListener(v -> elegirFichero("*/*"));
-        btnImagen.setOnClickListener(v -> elegirFichero("image/*"));
-        btnAudio.setOnClickListener(v -> elegirFichero("audio/*"));
-        btnVideo.setOnClickListener(v -> elegirFichero("video/*"));
+        // Botón documento sigue siendo solo selector
+        btnDocumento.setOnClickListener(v -> abrirSoloSelector("*/*"));
+
+        // Botones multimedia con Chooser (Cámara/Grabadora o Galería)
+        btnImagen.setOnClickListener(v -> abrirChooserMultimedia("image/*", MediaStore.ACTION_IMAGE_CAPTURE, ".jpg"));
+        btnVideo.setOnClickListener(v -> abrirChooserMultimedia("video/*", MediaStore.ACTION_VIDEO_CAPTURE, ".mp4"));
+        btnAudio.setOnClickListener(v -> abrirChooserMultimedia("audio/*", MediaStore.Audio.Media.RECORD_SOUND_ACTION, ".3gp"));
 
         btnDocumento.setOnLongClickListener(v -> confirmarBorrado("documento"));
         btnImagen.setOnLongClickListener(v -> confirmarBorrado("imagen"));
@@ -146,6 +158,47 @@ public class SecondFragment extends Fragment {
         btnVideo.setOnLongClickListener(v -> confirmarBorrado("video"));
 
         return fragmento2;
+    }
+
+    private void abrirSoloSelector(String mime) {
+        tipoFicheroSolicitado = mime;
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(mime);
+        multimediaLauncher.launch(intent);
+    }
+
+    private void abrirChooserMultimedia(String mime, String action, String extension) {
+        tipoFicheroSolicitado = mime;
+        
+        // 1. Intent para elegir de la galería/archivos
+        Intent intentGaleria = new Intent(Intent.ACTION_GET_CONTENT);
+        intentGaleria.setType(mime);
+        intentGaleria.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // 2. Intent para capturar con cámara/grabadora
+        Intent intentCaptura = new Intent(action);
+        File tempFile = crearArchivoDestinoDirecto(extension);
+        if (tempFile != null) {
+            uriCamaraTemporal = FileProvider.getUriForFile(requireContext(), "com.example.tareafinalut01.fileprovider", tempFile);
+            intentCaptura.putExtra(MediaStore.EXTRA_OUTPUT, uriCamaraTemporal);
+            intentCaptura.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+
+        // 3. Crear el Chooser
+        Intent chooser = Intent.createChooser(intentGaleria, "Selecciona una opción");
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCaptura});
+        multimediaLauncher.launch(chooser);
+    }
+
+    private File crearArchivoDestinoDirecto(String extension) {
+        try {
+            File carpeta = obtenerCarpetaAlmacenamiento();
+            String nombre = "CAPTURA_" + System.currentTimeMillis() + extension;
+            File file = new File(carpeta, nombre);
+            if (file.createNewFile()) return file;
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
     }
 
     private boolean confirmarBorrado(String tipo) {
@@ -159,7 +212,6 @@ public class SecondFragment extends Fragment {
                         case "audio": tarea.setUriAudio(null); break;
                         case "video": tarea.setUriVideo(null); break;
                     }
-                    Toast.makeText(getContext(), "Archivo de " + tipo + " eliminado", Toast.LENGTH_SHORT).show();
                     actualizarEstadoBotones();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -183,48 +235,11 @@ public class SecondFragment extends Fragment {
         }
     }
 
-    private void elegirFichero(String mimeType) {
-        tipoFicheroSolicitado = mimeType;
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType(mimeType);
-        filePickerLauncher.launch(intent);
-    }
-
     private String guardarArchivoEnLocal(Uri uri) {
         try {
             String nombreArchivo = getFileName(uri);
             if (nombreArchivo == null) nombreArchivo = "archivo_adjunto";
-            File carpetaDestino = null;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-            boolean deseaSD = prefs.getBoolean("checkbox_sd", false);
-
-            // Si desea SD, buscamos EXCLUSIVAMENTE una tarjeta SD física real (índice 1)
-            if (deseaSD) {
-                File[] externalDirs = requireContext().getExternalFilesDirs(null);
-                if (externalDirs != null && externalDirs.length > 1 && externalDirs[1] != null) {
-                    // Verificamos que la SD física esté montada y lista para escribir
-                    if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(externalDirs[1]))) {
-                        carpetaDestino = new File(externalDirs[1], "adjuntos");
-                    }
-                }
-            }
-
-            // Si no se encontró SD física, usamos el almacenamiento interno privado
-            if (carpetaDestino == null) {
-                carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
-            }
-
-
-            if (!carpetaDestino.exists()) {
-                if (!carpetaDestino.mkdirs()) {
-                    // Fallback de emergencia al almacenamiento interno privado
-                    carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
-                    if (!carpetaDestino.exists()) carpetaDestino.mkdirs();
-                }
-            }
-
-
+            File carpetaDestino = obtenerCarpetaAlmacenamiento();
             File archivoDestino = new File(carpetaDestino, System.currentTimeMillis() + "_" + nombreArchivo);
             try (InputStream in = requireContext().getContentResolver().openInputStream(uri);
                  OutputStream out = new FileOutputStream(archivoDestino)) {
@@ -232,12 +247,26 @@ public class SecondFragment extends Fragment {
                 int len;
                 while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
             }
-
             return Uri.fromFile(archivoDestino).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) { return null; }
+    }
+
+    private File obtenerCarpetaAlmacenamiento() {
+        File carpetaDestino = null;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (prefs.getBoolean("checkbox_sd", false)) {
+            File[] externalDirs = requireContext().getExternalFilesDirs(null);
+            if (externalDirs != null && externalDirs.length > 1 && externalDirs[1] != null) {
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(externalDirs[1]))) {
+                    carpetaDestino = new File(externalDirs[1], "adjuntos");
+                }
+            }
         }
+        if (carpetaDestino == null) {
+            carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
+        }
+        if (!carpetaDestino.exists()) carpetaDestino.mkdirs();
+        return carpetaDestino;
     }
 
     private String getFileName(Uri uri) {
@@ -261,9 +290,8 @@ public class SecondFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments != null && arguments.containsKey("tarea")) {
-            this.tarea = arguments.getParcelable("tarea");
+        if (getArguments() != null && getArguments().containsKey("tarea")) {
+            this.tarea = getArguments().getParcelable("tarea");
             if (this.tarea != null) {
                 etDescripcion.setText(tarea.getDescripcion());
                 actualizarEstadoBotones();

@@ -1,4 +1,4 @@
-package com.example.tareafinalut01.Actividades;
+package com.example.tareafinalut01.BD;
 
 import androidx.room.TypeConverter;
 

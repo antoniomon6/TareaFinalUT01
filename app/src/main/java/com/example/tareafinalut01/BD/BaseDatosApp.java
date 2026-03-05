@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.tareafinalut01.Actividades.Converters;
 import com.example.tareafinalut01.DAO.TareaDAO;
 import com.example.tareafinalut01.Entidades.Tarea;
 

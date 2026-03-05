@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +41,10 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolderTa
     @Override
     public void onBindViewHolder(@NonNull ViewHolderTarea holder, int position) {
         holder.bindTarea(misTareasAdapt.get(position));
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.animacion_tarea);
+        // le pongo un retraso a la animacion para mejorar la estetica MALAGONIANA
+        animation.setStartOffset(position * 100);
+        holder.itemView.startAnimation(animation);
     }
 
     @Override

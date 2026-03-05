@@ -23,7 +23,7 @@
         <item>Alfabético</item>
         <item>Fecha de creación</item>
         <item>Días restantes</item>
-        <item>Prograso</item>
+        <item>Progreso</item>
     </string-array>
     <string-array name="criterio_values">
         <item>1</item>

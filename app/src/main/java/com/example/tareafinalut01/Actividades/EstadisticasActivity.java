@@ -29,16 +29,12 @@ public class EstadisticasActivity extends BaseActivity {
 
         repository = new TareaRepository(getApplication());
 
-        initViews();
-        observarEstadisticas();
-    }
-
-    private void initViews() {
         tvTotal = findViewById(R.id.tv_total_tareas);
         tvProgresoMedio = findViewById(R.id.tv_progreso_medio);
         tvPrioritarias = findViewById(R.id.tv_tareas_prioritarias);
         tvCompletadas = findViewById(R.id.tv_tareas_completadas);
         pbProgresoMedio = findViewById(R.id.pb_progreso_medio);
+        observarEstadisticas();
     }
 
     private void observarEstadisticas() {
