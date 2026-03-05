@@ -39,14 +39,13 @@ import java.io.OutputStream;
 public class SecondFragment extends Fragment {
 
     private EditText etDescripcion;
-    private Button btnVolver;
-    private Button btnGuardar;
+    private Button btnVolver, btnGuardar;
     private ImageButton btnDocumento, btnImagen, btnAudio, btnVideo;
 
     private ActivityResultLauncher<Intent> multimediaLauncher;
     private Tarea tarea;
     private String tipoFicheroSolicitado;
-    private Uri uriCamaraTemporal;
+    private File archivoCapturaTemporal; // Ahora guardamos el FILE, no la URI
 
     public interface ComuncacionFragmento2 {
         void ir1(Tarea tareaActualizada);
@@ -83,53 +82,52 @@ public class SecondFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        String finalUri = null;
+                        String rutaFinal = null;
 
-                        if (uriCamaraTemporal != null) {
-                            // Viene de captura directa (Cámara/Audio)
-                            finalUri = uriCamaraTemporal.toString();
-                            uriCamaraTemporal = null;
+                        if (archivoCapturaTemporal != null && archivoCapturaTemporal.exists()) {
+                            // Viene de captura directa (Cámara/Audio) -> Ya está guardado en el archivo físico
+                            rutaFinal = archivoCapturaTemporal.getAbsolutePath();
+                            archivoCapturaTemporal = null;
                         } else if (result.getData() != null) {
-                            // Viene de selección de archivo
+                            // Viene de selección de archivo -> Hay que copiarlo a nuestra carpeta local
                             Uri selectedUri = result.getData().getData();
                             if (selectedUri != null) {
-                                finalUri = guardarArchivoEnLocal(selectedUri);
+                                rutaFinal = copiarArchivoALocal(selectedUri);
                             }
                         }
 
-                        if (finalUri != null && tarea != null) {
-                            vincularUriATarea(finalUri);
+                        if (rutaFinal != null && tarea != null) {
+                            vincularRutaATarea(rutaFinal);
                             actualizarEstadoBotones();
                             Toast.makeText(getContext(), R.string.archivo_vinculado, Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        uriCamaraTemporal = null;
+                        archivoCapturaTemporal = null;
                     }
                 }
         );
     }
 
-    private void vincularUriATarea(String uri) {
+    private void vincularRutaATarea(String ruta) {
         switch (tipoFicheroSolicitado) {
-            case "image/*": tarea.setUriImagen(uri); break;
-            case "video/*": tarea.setUriVideo(uri); break;
-            case "audio/*": tarea.setUriAudio(uri); break;
-            case "*/*": tarea.setUriDocumento(uri); break;
+            case "image/*": tarea.setUriImagen(ruta); break;
+            case "video/*": tarea.setUriVideo(ruta); break;
+            case "audio/*": tarea.setUriAudio(ruta); break;
+            case "*/*": tarea.setUriDocumento(ruta); break;
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View fragmento2 = inflater.inflate(R.layout.fragment_second, container, false);
-        etDescripcion = fragmento2.findViewById(R.id.etm_Descricion);
-        btnGuardar = fragmento2.findViewById(R.id.btn_Guardar);
-        btnVolver = fragmento2.findViewById(R.id.btn_Volver);
-
-        btnDocumento = fragmento2.findViewById(R.id.btn_documento);
-        btnImagen = fragmento2.findViewById(R.id.btn_imagen);
-        btnAudio = fragmento2.findViewById(R.id.btn_audio);
-        btnVideo = fragmento2.findViewById(R.id.btn_video);
+        View view = inflater.inflate(R.layout.fragment_second, container, false);
+        etDescripcion = view.findViewById(R.id.etm_Descricion);
+        btnGuardar = view.findViewById(R.id.btn_Guardar);
+        btnVolver = view.findViewById(R.id.btn_Volver);
+        btnDocumento = view.findViewById(R.id.btn_documento);
+        btnImagen = view.findViewById(R.id.btn_imagen);
+        btnAudio = view.findViewById(R.id.btn_audio);
+        btnVideo = view.findViewById(R.id.btn_video);
 
         btnGuardar.setOnClickListener(v -> {
             if (tarea != null) {
@@ -144,10 +142,7 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        // Botón documento sigue siendo solo selector
         btnDocumento.setOnClickListener(v -> abrirSoloSelector("*/*"));
-
-        // Botones multimedia con Chooser (Cámara/Grabadora o Galería)
         btnImagen.setOnClickListener(v -> abrirChooserMultimedia("image/*", MediaStore.ACTION_IMAGE_CAPTURE, ".jpg"));
         btnVideo.setOnClickListener(v -> abrirChooserMultimedia("video/*", MediaStore.ACTION_VIDEO_CAPTURE, ".mp4"));
         btnAudio.setOnClickListener(v -> abrirChooserMultimedia("audio/*", MediaStore.Audio.Media.RECORD_SOUND_ACTION, ".3gp"));
@@ -157,7 +152,7 @@ public class SecondFragment extends Fragment {
         btnAudio.setOnLongClickListener(v -> confirmarBorrado("audio"));
         btnVideo.setOnLongClickListener(v -> confirmarBorrado("video"));
 
-        return fragmento2;
+        return view;
     }
 
     private void abrirSoloSelector(String mime) {
@@ -170,35 +165,81 @@ public class SecondFragment extends Fragment {
 
     private void abrirChooserMultimedia(String mime, String action, String extension) {
         tipoFicheroSolicitado = mime;
+        archivoCapturaTemporal = null;
         
-        // 1. Intent para elegir de la galería/archivos
         Intent intentGaleria = new Intent(Intent.ACTION_GET_CONTENT);
         intentGaleria.setType(mime);
         intentGaleria.addCategory(Intent.CATEGORY_OPENABLE);
 
-        // 2. Intent para capturar con cámara/grabadora
         Intent intentCaptura = new Intent(action);
-        File tempFile = crearArchivoDestinoDirecto(extension);
-        if (tempFile != null) {
-            uriCamaraTemporal = FileProvider.getUriForFile(requireContext(), "com.example.tareafinalut01.fileprovider", tempFile);
-            intentCaptura.putExtra(MediaStore.EXTRA_OUTPUT, uriCamaraTemporal);
+        archivoCapturaTemporal = crearArchivoVacioLocal(extension);
+        
+        if (archivoCapturaTemporal != null) {
+            Uri contentUri = FileProvider.getUriForFile(requireContext(), 
+                    "com.example.tareafinalut01.fileprovider", archivoCapturaTemporal);
+            intentCaptura.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
             intentCaptura.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
 
-        // 3. Crear el Chooser
         Intent chooser = Intent.createChooser(intentGaleria, "Selecciona una opción");
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCaptura});
         multimediaLauncher.launch(chooser);
     }
 
-    private File crearArchivoDestinoDirecto(String extension) {
+    private File crearArchivoVacioLocal(String extension) {
         try {
             File carpeta = obtenerCarpetaAlmacenamiento();
             String nombre = "CAPTURA_" + System.currentTimeMillis() + extension;
-            File file = new File(carpeta, nombre);
-            if (file.createNewFile()) return file;
-        } catch (Exception e) { e.printStackTrace(); }
-        return null;
+            return new File(carpeta, nombre);
+        } catch (Exception e) { return null; }
+    }
+
+    private String copiarArchivoALocal(Uri uri) {
+        try {
+            String nombreOriginal = getFileName(uri);
+            if (nombreOriginal == null) nombreOriginal = "archivo_adjunto";
+            
+            File carpetaDestino = obtenerCarpetaAlmacenamiento();
+            File archivoFinal = new File(carpetaDestino, System.currentTimeMillis() + "_" + nombreOriginal);
+            
+            try (InputStream in = requireContext().getContentResolver().openInputStream(uri);
+                 OutputStream out = new FileOutputStream(archivoFinal)) {
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
+            }
+            return archivoFinal.getAbsolutePath();
+        } catch (Exception e) { return null; }
+    }
+
+    private File obtenerCarpetaAlmacenamiento() {
+        File carpeta = null;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (prefs.getBoolean("checkbox_sd", false)) {
+            File[] dirs = requireContext().getExternalFilesDirs(null);
+            if (dirs != null && dirs.length > 1 && dirs[1] != null) {
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(dirs[1]))) {
+                    carpeta = new File(dirs[1], "adjuntos");
+                }
+            }
+        }
+        if (carpeta == null) {
+            carpeta = new File(requireContext().getFilesDir(), "adjuntos");
+        }
+        if (!carpeta.exists()) carpeta.mkdirs();
+        return carpeta;
+    }
+
+    private void actualizarEstadoBotones() {
+        if (tarea == null) return;
+        actualizarFondoBoton(btnDocumento, tarea.getUriDocumento() != null);
+        actualizarFondoBoton(btnImagen, tarea.getUriImagen() != null);
+        actualizarFondoBoton(btnAudio, tarea.getUriAudio() != null);
+        actualizarFondoBoton(btnVideo, tarea.getUriVideo() != null);
+    }
+
+    private void actualizarFondoBoton(ImageButton btn, boolean tieneArchivo) {
+        btn.setBackgroundColor(tieneArchivo ? Color.parseColor("#4481C784") : Color.TRANSPARENT);
     }
 
     private boolean confirmarBorrado(String tipo) {
@@ -217,56 +258,6 @@ public class SecondFragment extends Fragment {
                 .setNegativeButton("Cancelar", null)
                 .show();
         return true;
-    }
-
-    private void actualizarEstadoBotones() {
-        if (tarea == null) return;
-        actualizarFondoBoton(btnDocumento, tarea.getUriDocumento() != null);
-        actualizarFondoBoton(btnImagen, tarea.getUriImagen() != null);
-        actualizarFondoBoton(btnAudio, tarea.getUriAudio() != null);
-        actualizarFondoBoton(btnVideo, tarea.getUriVideo() != null);
-    }
-
-    private void actualizarFondoBoton(ImageButton btn, boolean tieneArchivo) {
-        if (tieneArchivo) {
-            btn.setBackgroundColor(Color.parseColor("#4481C784")); 
-        } else {
-            btn.setBackgroundColor(Color.TRANSPARENT);
-        }
-    }
-
-    private String guardarArchivoEnLocal(Uri uri) {
-        try {
-            String nombreArchivo = getFileName(uri);
-            if (nombreArchivo == null) nombreArchivo = "archivo_adjunto";
-            File carpetaDestino = obtenerCarpetaAlmacenamiento();
-            File archivoDestino = new File(carpetaDestino, System.currentTimeMillis() + "_" + nombreArchivo);
-            try (InputStream in = requireContext().getContentResolver().openInputStream(uri);
-                 OutputStream out = new FileOutputStream(archivoDestino)) {
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
-            }
-            return Uri.fromFile(archivoDestino).toString();
-        } catch (Exception e) { return null; }
-    }
-
-    private File obtenerCarpetaAlmacenamiento() {
-        File carpetaDestino = null;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (prefs.getBoolean("checkbox_sd", false)) {
-            File[] externalDirs = requireContext().getExternalFilesDirs(null);
-            if (externalDirs != null && externalDirs.length > 1 && externalDirs[1] != null) {
-                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState(externalDirs[1]))) {
-                    carpetaDestino = new File(externalDirs[1], "adjuntos");
-                }
-            }
-        }
-        if (carpetaDestino == null) {
-            carpetaDestino = new File(requireContext().getFilesDir(), "adjuntos");
-        }
-        if (!carpetaDestino.exists()) carpetaDestino.mkdirs();
-        return carpetaDestino;
     }
 
     private String getFileName(Uri uri) {

@@ -8,9 +8,13 @@ import android.database.Cursor;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tareafinalut01.Entidades.Tarea;
+import com.example.tareafinalut01.Fragmentos.ReproductorFragment;
 import com.example.tareafinalut01.R;
+
+import java.io.File;
 
 public class DescripcionActivity extends BaseActivity {
 
@@ -43,6 +47,8 @@ public class DescripcionActivity extends BaseActivity {
             }
             cargarDatos();
         }
+
+        configurarListeners();
     }
 
     private void cargarDatos() {
@@ -57,8 +63,31 @@ public class DescripcionActivity extends BaseActivity {
         }
     }
 
+    private void configurarListeners() {
+        tvDoc.setOnClickListener(v -> mostrarReproductor("Documento", tarea.getUriDocumento()));
+        tvImg.setOnClickListener(v -> mostrarReproductor("Imagen", tarea.getUriImagen()));
+        tvAud.setOnClickListener(v -> mostrarReproductor("Audio", tarea.getUriAudio()));
+        tvVid.setOnClickListener(v -> mostrarReproductor("Video", tarea.getUriVideo()));
+    }
+
+    private void mostrarReproductor(String tipo, String uri) {
+        if (uri == null || uri.isEmpty()) return;
+
+        ReproductorFragment fragment = ReproductorFragment.newInstance(tipo, uri);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        transaction.add(android.R.id.content, fragment); // Superponer en el contenedor principal
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     private String getFileName(String uriString, String defaultText) {
         if (uriString == null || uriString.isEmpty()) return defaultText;
+
+        // Si es una ruta absoluta (empieza por /), extraemos el nombre directamente
+        if (uriString.startsWith("/")) {
+            return new File(uriString).getName();
+        }
 
         Uri uri = Uri.parse(uriString);
         String result = null;
@@ -73,8 +102,21 @@ public class DescripcionActivity extends BaseActivity {
                         result = cursor.getString(index);
                     }
                 }
+            } catch (Exception e) {
+                // Si falla la consulta por falta de permisos o URI caducada, extraemos del path
             }
         }
+
+        if (result == null) {
+            String path = uri.getPath();
+            if (path != null) {
+                int cut = path.lastIndexOf('/');
+                if (cut != -1) {
+                    result = path.substring(cut + 1);
+                }
+            }
+        }
+
         return result != null ? result : defaultText;
     }
 
