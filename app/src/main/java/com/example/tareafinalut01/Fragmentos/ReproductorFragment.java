@@ -112,7 +112,6 @@ public class ReproductorFragment extends Fragment {
                     }
                     mediaPlayer.prepare();
                     pbAudio.setMax(mediaPlayer.getDuration());
-                    iniciarTimerAudio();
                     mediaPlayer.start();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -161,19 +160,7 @@ public class ReproductorFragment extends Fragment {
         getParentFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    private void iniciarTimerAudio() {
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> pbAudio.setProgress(mediaPlayer.getCurrentPosition()));
-                    }
-                }
-            }
-        }, 0, 500);
-    }
+
 
     private void ocultarTodo() {
         ivVisor.setVisibility(View.GONE);
